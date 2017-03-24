@@ -19,7 +19,7 @@
         },
         "time": "2016-11-19 13:22:46",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "."
