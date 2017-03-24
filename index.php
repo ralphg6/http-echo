@@ -5,19 +5,31 @@ require_once('vendor/autoload.php');
 /** @var \Base $f3 */
 @$f3 = \Base::instance();
 
+function resolvePath($filename){
+  return "/var/lib/http-echo/data{$_SERVER['REQUEST_URI']}.txt";
+}
+
 $f3->route('GET /',
     function() {
         echo 'Hello, world!';
     }
 );
 
-$f3->route("POST /*",function(){
-  $get_string = file_get_contents('php://input');
-  file_put_contents ("/var/lib/http-echo/data{$_SERVER['REQUEST_URI']}.txt" , $get_string);
+$f3->route("POST /*", function(){
+  $path = resolvePath($_SERVER['REQUEST_URI']);
+
+  file_put_contents ($path, file_get_contents('php://input'));
 });
 
-$f3->route("GET /*",function(){
-  echo file_get_contents ("/var/lib/http-echo/data{$_SERVER['REQUEST_URI']}.txt");
+$f3->route("GET /*", function(){
+  $path = resolvePath($_SERVER['REQUEST_URI']);
+
+  if(!file_exists($path)){
+    $f3->error(404, 'path not registred');
+    return;
+  }
+
+  echo file_get_contents ($path);
 });
 
 $f3->run();
