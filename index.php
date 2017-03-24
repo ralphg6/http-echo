@@ -19,6 +19,8 @@ $f3->route("POST /*", function($f3){
   $path = resolvePath($_SERVER['REQUEST_URI']);
 
   file_put_contents ($path, file_get_contents('php://input'));
+
+  $f3->status(201);
 });
 
 $f3->route("GET /*", function($f3){
