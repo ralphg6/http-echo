@@ -15,13 +15,13 @@ $f3->route('GET /',
     }
 );
 
-$f3->route("POST /*", function(){
+$f3->route("POST /*", function($f3){
   $path = resolvePath($_SERVER['REQUEST_URI']);
 
   file_put_contents ($path, file_get_contents('php://input'));
 });
 
-$f3->route("GET /*", function(){
+$f3->route("GET /*", function($f3){
   $path = resolvePath($_SERVER['REQUEST_URI']);
 
   if(!file_exists($path)){
